@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction History</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    min-height: 100vh;
+    display: grid;
+    place-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    background: url('https://framerusercontent.com/images/KpjV2VSMwf13yADrAx37ofxcF14.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .table {
+    border: solid 1px #F0F3F7;
+    width: 70vw;
+    border-radius: 12px;
+    background-color: #ffffff30;
+    backdrop-filter: blur(2rem);
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    color: #68778E;
+    border-top: solid 1px #F0F3F7;
+  }
+
+  .thead > .row {
+    background-color: #F7FAFC;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    color: #94A3B8;
+    border: none;
+  }
+  p {
+    width: 100%;
+  }
+
+  .tbody {
+    max-height: 70vh;
+    overflow-y: scroll;
+  }
+
+</style>
+
+<body>
+  <div class="container">
+
+    <div class="table">
+      <div class="thead">
+        <div class="row">
+          <p class="th">Created at</p>
+          <p class="th">UTR</p>
+          <p class="th">Amount</p>
+          <p class="th">Receipent ID</p>
+        </div>
+      </div>
+      <div class="tbody">
+        <% for(var i=0; i < data.length; i++) { %>
+          <div class="row">
+            <p class="td"><%= timeConverter(data[i].created_at) %></p>
+            <p class="td"><%= data[i].id.toString().slice(5) %></p>
+            <p class="td">₹<%= parseFloat(data[i].amount/100).toFixed(2) %></p>
+            <p class="td"><%= data[i].fund_account_id %></p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  
+  </div>
+</body>
+</html>

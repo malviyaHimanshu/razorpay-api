@@ -1,19 +1,44 @@
+require("dotenv").config();
 const express = require('express')
 const axios = require('axios');
 var bodyParser = require('body-parser')
-require("dotenv").config();
+const path = require('path')
 
 const app = express()
 const port = 3000
 var jsonParser = bodyParser.json()
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    hour = hour % 12;
+    hour = hour ? hour : 12;
+    var ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = ('0'+hour).slice(-2);
+    var min = ('0'+a.getMinutes()).slice(-2);
+    var sec = ('0'+a.getSeconds()).slice(-2);
+    var time = date + ' ' + month + ' ' + year + ', ' + hour + ':' + min + ' ' + ampm ;
+    return time;
+}
+
+app.get('/', async (req, res) => {
+    const headers = {
+        'Authorization': `Basic ${Buffer.from(`${process.env.KEY_ID}:${process.env.KEY_SECRET}`).toString('base64')}`,
+        'Content-Type': 'application/json',
+    };
+    const response = await axios.get('https://api.razorpay.com/v1/payouts?account_number=2323230096725838', { headers });
+    const transactions = await response.data.items;
+    res.render(__dirname + '/views/index.ejs', {data: transactions, timeConverter})
+});
 
 async function createFundAccount(upiID, contactID, headers) {
     const fund_data = {
