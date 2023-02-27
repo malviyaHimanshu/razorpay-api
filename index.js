@@ -30,6 +30,7 @@ function timeConverter(UNIX_timestamp){
     return time;
 }
 
+app.engine('html', require('ejs').renderFile);
 app.get('/', async (req, res) => {
     const headers = {
         'Authorization': `Basic ${Buffer.from(`${process.env.KEY_ID}:${process.env.KEY_SECRET}`).toString('base64')}`,
@@ -37,7 +38,7 @@ app.get('/', async (req, res) => {
     };
     const response = await axios.get('https://api.razorpay.com/v1/payouts?account_number=2323230096725838', { headers });
     const transactions = await response.data.items;
-    res.render(__dirname + '/views/index.ejs', {data: transactions, timeConverter})
+    res.render(__dirname + '/views/index.html', {data: transactions, timeConverter})
 });
 
 async function createFundAccount(upiID, contactID, headers) {
