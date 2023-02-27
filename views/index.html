@@ -7,7 +7,7 @@
   <title>Transaction History</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;700&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&display=swap" rel="stylesheet">
 </head>
 
 <style>
@@ -26,11 +26,13 @@
     background: url('https://framerusercontent.com/images/KpjV2VSMwf13yADrAx37ofxcF14.jpg') no-repeat;
     background-position: center;
     background-size: cover;
+    background-attachment: fixed;
   }
 
   .table {
     border: solid 1px #F0F3F7;
     width: 70vw;
+    max-width: 1200px;
     border-radius: 12px;
     background-color: #ffffff30;
     backdrop-filter: blur(2rem);
@@ -46,18 +48,56 @@
 
   .thead > .row {
     background-color: #F7FAFC;
+    color: #94A3B8;
+  }
+  .heading {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    color: #94A3B8;
     border: none;
   }
+  
+  .code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
   p {
     width: 100%;
   }
 
   .tbody {
-    max-height: 70vh;
+    max-height: 78vh;
     overflow-y: scroll;
+  }
+  .tbody::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 1000px) {
+    body {
+      font-size: 14px;
+    }
+    .container {
+      max-width: calc(100vw - 20px);
+      overflow-x: scroll;
+      margin: 0 20px;
+      border: solid 1px #F0F3F7;
+      border-radius: 12px;
+      background-color: #ffffff30;
+      backdrop-filter: blur(2rem);
+    }
+    .container::-webkit-scrollbar {
+      display: none;
+    }
+    .table {
+      width: 800px;
+      border: none;
+      background-color: transparent;
+      backdrop-filter: blur(0);
+    }
+    .tbody {
+      max-height: 85vh;
+      overflow-y: scroll;
+    }
   }
 
 </style>
@@ -67,6 +107,9 @@
 
     <div class="table">
       <div class="thead">
+        <div class="row heading">
+          <p class="th">LATEST TRANSACTIONS</p>
+        </div>
         <div class="row">
           <p class="th">Created at</p>
           <p class="th">UTR</p>
@@ -78,9 +121,9 @@
         <% for(var i=0; i < data.length; i++) { %>
           <div class="row">
             <p class="td"><%= timeConverter(data[i].created_at) %></p>
-            <p class="td"><%= data[i].id.toString().slice(5) %></p>
-            <p class="td">₹<%= parseFloat(data[i].amount/100).toFixed(2) %></p>
-            <p class="td"><%= data[i].fund_account_id %></p>
+            <p class="td code"><%= data[i].id.toString().slice(5) %></p>
+            <p class="td"><b>₹<%= parseFloat(data[i].amount/100).toFixed(2) %></b></p>
+            <p class="td code"><%= data[i].fund_account_id %></p>
           </div>
         <% } %>
       </div>
